@@ -55,7 +55,7 @@ public class AddActivity extends AppCompatActivity {
                 finish();
 
                 Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, 5);
+                cal.add(Calendar.HOUR, 8);
 
                 Intent intent = new Intent(AddActivity.this,
                         ScheduledNotificationReceiver.class);

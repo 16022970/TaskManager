@@ -8,13 +8,14 @@
     tools:context=".MainActivity">
 
     <ListView
-        android:layout_width="369dp"
-        android:layout_height="454dp">
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="461dp">
 
     </ListView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnAdd1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Task" />

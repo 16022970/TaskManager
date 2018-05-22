@@ -45,7 +45,7 @@ public class AddActivity extends AppCompatActivity {
                 String desc = etDesc.getText().toString();
                 String sec = etSec.getText().toString();
 
-                if (!sec.equals("")) {
+                if (!name.equals("") || !desc.equals("") || !sec.equals("")) {
                     int seconds = Integer.parseInt(sec);
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.SECOND, seconds);
@@ -74,6 +74,10 @@ public class AddActivity extends AppCompatActivity {
                             getSystemService(Activity.ALARM_SERVICE);
                     am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
                             pendingIntent);
+                } else {
+                    Toast.makeText(AddActivity.this, "Please fill in all blanks",
+                            Toast.LENGTH_SHORT).show();
+                    
                 }
             }
         });

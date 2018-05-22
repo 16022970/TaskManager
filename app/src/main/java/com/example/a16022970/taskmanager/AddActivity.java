@@ -22,6 +22,7 @@ public class AddActivity extends AppCompatActivity {
 
     EditText etName;
     EditText etDesc;
+    EditText etSec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,43 +34,48 @@ public class AddActivity extends AppCompatActivity {
 
         etName = (EditText) findViewById(R.id.etName);
         etDesc = (EditText) findViewById(R.id.etDesc);
-
+        etSec = (EditText) findViewById(R.id.etSec);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String name = etName.getText().toString();
                 String desc = etDesc.getText().toString();
+                String sec = etSec.getText().toString();
 
-                DBHelper dbh = new DBHelper(AddActivity.this);
-                long row_affected = dbh.insertTask(name, desc);
-                dbh.close();
-                if (row_affected != -1) {
+                if (!sec.equals("")) {
+                    int seconds = Integer.parseInt(sec);
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.SECOND, seconds);
 
-                    Toast.makeText(AddActivity.this, "Insert successful",
-                            Toast.LENGTH_SHORT).show();
+                    DBHelper dbh = new DBHelper(AddActivity.this);
+                    long row_affected = dbh.insertTask(name, desc, sec);
+                    dbh.close();
+                    if (row_affected != -1) {
+
+                        Toast.makeText(AddActivity.this, "Insert successful",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    Intent i = new Intent(AddActivity.this,
+                            MainActivity.class);
+                    startActivityForResult(i, 9);
+                    finish();
+
+                    Intent intent = new Intent(AddActivity.this,
+                            ScheduledNotificationReceiver.class);
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                            AddActivity.this, reqCode,
+                            intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    AlarmManager am = (AlarmManager)
+                            getSystemService(Activity.ALARM_SERVICE);
+                    am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                            pendingIntent);
                 }
-                Intent i = new Intent(AddActivity.this,
-                        MainActivity.class);
-                startActivityForResult(i, 9);
-                finish();
-
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.HOUR, 8);
-
-                Intent intent = new Intent(AddActivity.this,
-                        ScheduledNotificationReceiver.class);
-
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                        AddActivity.this, reqCode,
-                        intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                AlarmManager am = (AlarmManager)
-                        getSystemService(Activity.ALARM_SERVICE);
-                am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-                        pendingIntent);
             }
-
         });
 
 
